@@ -1,21 +1,27 @@
 from app import db
-from app.models.quest import QCM
+from app.models.quest import Quest
 import json
 
-def seed_qcm():
-    qcms = [
-        QCM(
+def seed_quest():
+    quests = [
+        Quest(
             question="Quel est le langage principal de Flask ?",
-            choices=json.dumps(["JavaScript", "Python", "PHP", "Ruby"]),
-            correct_index=1
+            reponses=["JavaScript", "Python", "PHP", "Ruby"],
+            bonne_reponse="Python",
+            difficulte="facile",
+            xp_gagne=10,
+            xp_perdu=2
         ),
-        QCM(
+        Quest(
             question="Quelle commande initialise un projet Git ?",
-            choices=json.dumps(["git start", "git init", "git push", "git clone"]),
-            correct_index=1
+            reponses=["git start", "git init", "git push", "git clone"],
+            bonne_reponse="git init",
+            difficulte="facile",
+            xp_gagne=10,
+            xp_perdu=2
         )
     ]
 
-    db.session.bulk_save_objects(qcms)
+    db.session.bulk_save_objects(quests)
     db.session.commit()
-    print("Base de QCM insérée.")
+    print("Base de Quests insérée.")
