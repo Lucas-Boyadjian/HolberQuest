@@ -3,7 +3,7 @@
 import os
 import random
 import requests
-from app.models.qcm import QCM  # à créer si pas encore fait
+from app.models.quest import QCM  # à créer si pas encore fait
 from app import db
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
