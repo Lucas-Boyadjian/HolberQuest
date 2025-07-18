@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Webhook listener
 
 import os
@@ -58,5 +57,3 @@ def slack_events():
             })
 
     return '', 200
-=======
->>>>>>> origin/dev2
