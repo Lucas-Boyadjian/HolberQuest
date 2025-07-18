@@ -6,6 +6,9 @@ import requests
 from app.models.quest import QCM  # à créer si pas encore fait
 from app import db
 from app.utils.helpers import gain_xp
+from app.utils.timer import combat_data
+from app.models.quest import QCM
+from app.models.user import User
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_API_URL = "https://slack.com/api/chat.postMessage"
@@ -50,8 +53,6 @@ def start_combat_for_user(user_id):
     send_message_to_user(user_id, "Une quête commence !", blocks=blocks)
 
     # À ce stade, il faut que tu crées un handler pour les réponses (interactions Slack) avec l’action "answer_qcm"
-<<<<<<< HEAD
-=======
 def calculer_niveau(xp):
     # Exemple simple : 100 XP par niveau
     return xp // 100 + 1
@@ -68,4 +69,36 @@ def get_user_rank(user):
 def lose_xp(user, xp_perdu):
     user.xp = max(0, user.xp - xp_perdu)
     user.niveau = calculer_niveau(user.xp)
->>>>>>> origin/dev2
+
+def lose_xp(user, xp_perdu):
+    user.xp = max(0, user.xp - xp_perdu)
+    user.niveau = calculer_niveau(user.xp)
+
+def resolve_qcm_response(user_id, qcm_id, user_choice):
+    combat_data.pop(user_id, None)
+
+    qcm = QCM.query.get(qcm_id)
+    user = User.query.filter_by(slack_id=user_id).first()
+    if not user or not qcm:
+        return
+
+    if qcm.correct_index == user_choice:
+        send_message_to_user(user_id, ":white_check_mark: Bonne réponse ! Tu gagnes de l'XP.")
+        gain_xp(user, qcm.xp_gagne)
+    else:
+        send_message_to_user(user_id, ":x: Mauvaise réponse ! Tu perds de l'XP.")
+        lose_xp(user, qcm.xp_perdu)
+    from app import db
+    db.session.commit()
+
+def auto_fail_combat(user_id):
+    combat_data.pop(user_id, None)
+    user = User.query.filter_by(slack_id=user_id).first()
+    # Optionnel: tu peux retrouver le dernier QCM pour l'user si besoin
+    send_message_to_user(user_id, ":hourglass_flowing_sand: Temps écoulé ! Tu as perdu le combat.")
+    if user:
+        # Par défaut, perte de 5 XP si pas de QCM associé
+        lose_xp(user, 5)
+        from app import db
+        db.session.commit()
+
