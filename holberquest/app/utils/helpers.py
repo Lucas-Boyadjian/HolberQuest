@@ -3,7 +3,7 @@
 import os
 import random
 import requests
-from app.models.quest import QCM  # à créer si pas encore fait
+from app.models.quest import Quest
 from app import db
 from app.utils.helpers import gain_xp
 
