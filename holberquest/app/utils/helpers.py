@@ -1,10 +1,9 @@
-<<<<<<< HEAD
 # Utility functions
 
 import os
 import random
 import requests
-from app.models.qcm import QCM  # à créer si pas encore fait
+from app.models.quest import QCM  # à créer si pas encore fait
 from app import db
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
@@ -50,5 +49,3 @@ def start_combat_for_user(user_id):
     send_message_to_user(user_id, "Une quête commence !", blocks=blocks)
 
     # À ce stade, il faut que tu crées un handler pour les réponses (interactions Slack) avec l’action "answer_qcm"
-=======
->>>>>>> origin/dev2

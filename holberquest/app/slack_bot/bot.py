@@ -1,16 +1,16 @@
-<<<<<<< HEAD
 # Webhook listener
 
 import os
 import time
 import hmac
 import hashlib
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, current_app as app
 from app.utils.helpers import start_combat_for_user  # À créer
 
 slack_bot = Blueprint('slack_bot', __name__)
 
 SLACK_SIGNING_SECRET = os.environ.get("SLACK_SIGNING_SECRET")
+SLACK_SIGNING_SECRET = app.config["SLACK_SIGNING_SECRET"]
 
 
 def verify_slack_request(req):
@@ -58,5 +58,3 @@ def slack_events():
             })
 
     return '', 200
-=======
->>>>>>> origin/dev2
