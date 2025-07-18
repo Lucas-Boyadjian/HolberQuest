@@ -1,1 +1,9 @@
-# Combat model
+from app import db
+
+class Combat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    adversaire_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    quest_id = db.Column(db.Integer, db.ForeignKey('quest.id'))
+    resultat = db.Column(db.String(50))  # win, lose, flee, help
+    date = db.Column(db.DateTime)
