@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Utility functions
 
 import os
@@ -50,5 +49,3 @@ def start_combat_for_user(user_id):
     send_message_to_user(user_id, "Une quête commence !", blocks=blocks)
 
     # À ce stade, il faut que tu crées un handler pour les réponses (interactions Slack) avec l’action "answer_qcm"
-=======
->>>>>>> origin/dev2
