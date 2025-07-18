@@ -50,8 +50,6 @@ def start_combat_for_user(user_id):
     send_message_to_user(user_id, "Une quête commence !", blocks=blocks)
 
     # À ce stade, il faut que tu crées un handler pour les réponses (interactions Slack) avec l’action "answer_qcm"
-<<<<<<< HEAD
-=======
 def calculer_niveau(xp):
     # Exemple simple : 100 XP par niveau
     return xp // 100 + 1
@@ -68,4 +66,3 @@ def get_user_rank(user):
 def lose_xp(user, xp_perdu):
     user.xp = max(0, user.xp - xp_perdu)
     user.niveau = calculer_niveau(user.xp)
->>>>>>> origin/dev2
