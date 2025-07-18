@@ -15,6 +15,8 @@ def register():
     )
     db.session.add(user)
     db.session.commit()
+    user.avatar = f"https://api.dicebear.com/7.x/bottts/svg?seed={user.id}"
+    db.session.commit()
     return jsonify({'message': 'User created', 'id': user.id}), 201
 
 @auth_bp.route('/login', methods=['POST'])
