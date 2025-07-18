@@ -3,6 +3,7 @@
 from app import db
 
 class Quest(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.String(255), nullable=False)
     reponses = db.Column(db.JSON, nullable=False)  # Liste de réponses possibles
