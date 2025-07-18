@@ -7,8 +7,12 @@
 </head>
 <body>
     <header>
-        <h1>HolberQuest</h1>
-        <nav>
+  <div class="header-deco">
+    <img src="../static/Hypo.png" class="header-seahorse-svg" alt="Hippocampe" />
+    <h1>HolberQuest</h1>
+    <img src="../static/Hypo.png" class="header-seahorse-svg" alt="Hippocampe" />
+  </div>
+  <nav>
             <ul>
                 <li><a href="/index.html">Accueil</a></li>
                 <li><a href="/leaderboard.html">Classement</a></li>
@@ -16,21 +20,25 @@
                 <li><a href="/quest.html">Quêtes</a></li>
             </ul>
         </nav>
-    </header>
+</header>
     <main>
-        <section id="profile-menu">
+  <div id="profile-main-container">
+    <section id="profile-menu">
             <div id="profile-info-menu">
                 <div id="profile-avatar">
-                    <img src="/static/avatars/default.png" alt="Avatar" width="120" height="120">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Holberton" alt="Avatar joueur" />
                 </div>
                 <div id="profile-stats">
-                    <p>Pseudo : <span id="profile-username">Lucas</span></p>
-                    <p>Niveau : <span id="profile-level">3</span> 🧑‍💻</p>
-                    <p>XP : <span id="profile-xp">120</span> ⭐</p>
-                    <div id="life-bar-container">
-                        <label for="life-bar">Vie :</label>
-                        <progress id="life-bar" value="75" max="100"></progress>
-                        <span id="life-value">75/100</span>
+                    <div id="profile-pseudo">
+                        <span class="profile-badge">👑</span>
+                        <span class="profile-pseudo-text">Stephane</span>
+                    </div>
+                    <div id="profile-level-container">
+                        <span class="profile-level-shield">Lv <span id="profile-level">12</span></span>
+                    </div>
+                    <div id="profile-xp-bar">
+                        <progress id="xp-bar" value="75" max="100"></progress>
+                        <span id="profile-xp">XP: 750/1000</span>
                     </div>
                 </div>
             </div>
@@ -39,7 +47,17 @@
                 <button id="start-quest">Commencer une quête</button>
             </div>
         </section>
-    </main>
+    <div id="profile-extra-stats">
+  <h3><span class="stats-icon">📊</span> Statistiques</h3>
+  <ul>
+    <li><span class="stats-badge">🏆</span> Quêtes réussies : <span id="quests-won">12</span></li>
+    <li><span class="stats-badge">⭐</span> Taux de réussite : <span id="success-rate">80%</span></li>
+    <li><span class="stats-badge">💎</span> XP total : <span id="total-xp">350</span></li>
+    <li><span class="stats-badge">⚔️</span> Combats : <span id="combats">15</span></li>
+  </ul>
+</div>
+  </div>
+</main>
     <footer>
         <p>&copy; 2025 Holberton School</p>
     </footer>
