@@ -1,36 +1,68 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> origin/Dev1
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Profil - HolberQuest</title>
     <link rel="stylesheet" href="profile.css">
+    <style>
+        html, body {
+            height: 100vh;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>HolberQuest</h1>
-        <nav>
+  <div class="code-rain-bg">
+    <div class="code-rain c1">if (xp > 1000) {<br>levelUp();<br>}</div>
+    <div class="code-rain c2">for (let q of quests) {<br>q.win();<br>}</div>
+    <div class="code-rain c3">function combat() {<br>return xp += 50;<br>}</div>
+    <div class="code-rain c4">while (life > 0) {<br>quest();<br>}</div>
+    <div class="code-rain c5">const player = "Stephane";</div>
+    <div class="code-rain c6">if (success) {<br>xp++<br>}</div>
+    <div class="code-rain c7">let badge = "👑";</div>
+  </div>
+  <header>
+  <div class="header-deco">
+    <img src="../static/Hypo.png" class="header-seahorse-svg" alt="Hippocampe" />
+    <h1>HolberQuest</h1>
+    <img src="../static/Hypo.png" class="header-seahorse-svg" alt="Hippocampe" />
+  </div>
+  <nav>
             <ul>
-                <li><a href="/index.html">Accueil</a></li>
+                <li><a href="/login.html">Accueil</a></li>
                 <li><a href="/leaderboard.html">Classement</a></li>
-                <li><a href="/profile.html">Profil</a></li>
-                <li><a href="/quest.html">Quêtes</a></li>
+
             </ul>
         </nav>
-    </header>
-    <main>
-        <section id="profile-menu">
+</header>
+<div class="wave-bg">
+  <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#a5d8ff" fill-opacity="0.7" d="M0,40 C480,120 960,0 1440,80 L1440,120 L0,120 Z"></path>
+  </svg>
+</div>
+<main>
+  <div id="profile-main-container">
+    <section id="profile-menu">
             <div id="profile-info-menu">
                 <div id="profile-avatar">
-                    <img src="/static/avatars/default.png" alt="Avatar" width="120" height="120">
+                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Holberton" alt="Avatar joueur" />
                 </div>
                 <div id="profile-stats">
-                    <p>Pseudo : <span id="profile-username">Lucas</span></p>
-                    <p>Niveau : <span id="profile-level">3</span> 🧑‍💻</p>
-                    <p>XP : <span id="profile-xp">120</span> ⭐</p>
-                    <div id="life-bar-container">
-                        <label for="life-bar">Vie :</label>
-                        <progress id="life-bar" value="75" max="100"></progress>
-                        <span id="life-value">75/100</span>
+                    <div id="profile-pseudo">
+                        <span class="profile-badge">👑</span>
+                        <span class="profile-pseudo-text">Stephane</span>
+                    </div>
+                    <div id="profile-level-container">
+                        <span class="profile-level-shield">Lv <span id="profile-level">12</span></span>
+                    </div>
+                    <div id="profile-xp-bar">
+                        <progress id="xp-bar" value="75" max="100"></progress>
+                        <span id="profile-xp">XP: 750/1000</span>
                     </div>
                 </div>
             </div>
@@ -39,9 +71,33 @@
                 <button id="start-quest">Commencer une quête</button>
             </div>
         </section>
-    </main>
+    <div id="profile-extra-stats">
+  <h3><span class="stats-icon">📊</span> Statistiques</h3>
+  <ul>
+    <li><span class="stats-badge">🏆</span> Quêtes réussies : <span id="quests-won">12</span></li>
+    <li><span class="stats-badge">⭐</span> Taux de réussite : <span id="success-rate">80%</span></li>
+    <li><span class="stats-badge">💎</span> XP total : <span id="total-xp">350</span></li>
+    <li><span class="stats-badge">⚔️</span> Combats : <span id="combats">15</span></li>
+  </ul>
+</div>
+  </div>
+  <div class="main-bubbles-bg">
+  <div class="bubble b1"></div>
+  <div class="bubble b2"></div>
+  <div class="bubble b3"></div>
+  <div class="bubble b4"></div>
+  <div class="bubble b5"></div>
+  <div class="bubble b6"></div>
+  <div class="bubble b7"></div>
+  <div class="bubble b8"></div>
+</div>
+</main>
     <footer>
         <p>&copy; 2025 Holberton School</p>
     </footer>
 </body>
 </html>
+<<<<<<< HEAD
+>>>>>>> origin/dev2
+=======
+>>>>>>> origin/Dev1
