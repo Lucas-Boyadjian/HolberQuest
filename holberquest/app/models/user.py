@@ -10,3 +10,4 @@ class User(db.Model):
     niveau = db.Column(db.Integer, default=1)
     cohorte = db.Column(db.String(80))
     campus = db.Column(db.String(80))
+    slack_id = db.Column(db.String(50), unique=True)
