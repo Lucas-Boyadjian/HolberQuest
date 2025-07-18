@@ -1,18 +1,15 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 from backend.routes.player import player_routes
 from backend.routes.quest import quest_routes
 from backend.routes.leaderboard import leaderboard_routes
-import sqlite3
 
 app = Flask(__name__)
 CORS(app)
-
-# Database connection
-def get_db_connection():
-    conn = sqlite3.connect('backend/database/db.sqlite3')
-    conn.row_factory = sqlite3.Row
-    return conn
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backend/database/db.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
 # Register routes
 app.register_blueprint(player_routes)
