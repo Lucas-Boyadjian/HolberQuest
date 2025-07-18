@@ -204,7 +204,7 @@ progress#life-bar {
 }
 
 #profile-actions button {
-    background: linear-gradient(90deg, #b71c1c 0%, #2563eb 100%);
+    background: linear-gradient(90deg, #2563eb 0%, #a5d8ff 100%);
     color: #fff;
     border: none;
     border-radius: 10px;
@@ -212,12 +212,12 @@ progress#life-bar {
     font-size: 1.15em;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 2px 8px #0001;
+    box-shadow: 0 2px 8px #2563eb22;
     transition: background 0.2s, transform 0.2s;
 }
 
 #profile-actions button:hover {
-    background: linear-gradient(90deg, #2563eb 0%, #b71c1c 100%);
+    background: linear-gradient(90deg, #a5d8ff 0%, #2563eb 100%);
     transform: scale(1.08);
 }
 
