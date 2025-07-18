@@ -36,9 +36,9 @@ main {
 
 #profile-main-container {
     display: flex;
-    align-items: flex-start;
     justify-content: center;
-    gap: 500px;
+    align-items: flex-start;
+    gap: 40px; /* espace entre les deux blocs, ajuste la valeur si besoin */
     margin: 40px 0;
 }
 
