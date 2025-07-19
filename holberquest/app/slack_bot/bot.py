@@ -35,15 +35,15 @@ def verify_slack_request(req):
 
 @slack_bot.route('/slack/events', methods=['POST'])
 def slack_events():
-    # Vérification de sécurité Slack
-    if not verify_slack_request(request):
-        abort(403)
-
     data = request.json
 
     # 1. Verification initiale Slack (connexion du bot)
     if data.get('type') == 'url_verification':
         return jsonify({'challenge': data.get('challenge')})
+
+    # Vérification de sécurité Slack (pour les autres requêtes)
+    if not verify_slack_request(request):
+        abort(403)
 
     # 2. Traitement des événements
     event = data.get('event', {})
