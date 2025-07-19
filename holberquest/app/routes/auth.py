@@ -5,6 +5,7 @@ from app.models.user import User
 import jwt
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import session
 
 SECRET_KEY = "un_secret_pour_la_session"
 auth_bp = Blueprint('auth', __name__)
@@ -78,6 +79,7 @@ def login():
 
     user = User.query.filter_by(email=email).first()
     if user and check_password_hash(user.password_hash, password):
+        session['user_id'] = user.id  # <-- AJOUTE CETTE LIGNE
         token = jwt.encode({
             'user_id': user.id,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
