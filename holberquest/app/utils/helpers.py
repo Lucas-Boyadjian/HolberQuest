@@ -3,9 +3,14 @@
 import os
 import random
 import requests
+<<<<<<< HEAD
 from app.models.quest import Quest  # Remplace QCM par Quest
 from app import db
 from flask import current_app
+=======
+from app.models.quest import Quest
+from app import db
+>>>>>>> origin/dev2
 
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
