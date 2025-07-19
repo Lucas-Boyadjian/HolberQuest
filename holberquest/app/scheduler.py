@@ -7,13 +7,11 @@ from app import app, db
 def send_daily_question():
     with app.app_context():
         users = User.query.all()
-        quest = Quest.query.order_by(db.func.random()).first()
-        if not quest:
-            return
         # Mets ici l'URL de ton site ou de ngrok
         base_url = "	https://eef55bc7c368.ngrok-free.app"  # à adapter
-        quest_url = f"{base_url}/quest/view/{quest.id}"
         for user in users:
+            quest = Quest.query.order_by(db.func.random()).first()
+            quest_url = f"{base_url}/quest/view/{quest.id}"
             blocks = [
                 {
                     "type": "section",
