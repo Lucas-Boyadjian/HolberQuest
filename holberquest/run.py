@@ -17,5 +17,4 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(quest_bp)
 
 if __name__ == "__main__":
-    with app.app_context():
-        send_daily_question()
+    app.run(debug=True)
