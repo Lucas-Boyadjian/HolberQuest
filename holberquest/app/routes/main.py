@@ -2,6 +2,10 @@ from flask import Blueprint, render_template
 
 main_bp = Blueprint('main', __name__)
 
+@main_bp.route('/')
+def home():
+    return render_template('login.html')
+
 @main_bp.route('/profile')
 def profile():
     return render_template('profile.html')
@@ -31,3 +35,8 @@ def leaderboard():
         {'pseudo': 'Zoe', 'niveau': 2, 'xp': 120, 'avatar': None},
     ]
     return render_template('leaderboard.html', users=users)
+
+@main_bp.route('/login')
+def login():
+    return render_template('login.html')
+

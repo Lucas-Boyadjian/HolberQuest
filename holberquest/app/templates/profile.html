@@ -27,13 +27,13 @@
     <h1>HolberQuest</h1>
     <img src="../static/Hypo.png" class="header-seahorse-svg" alt="Hippocampe" />
   </div>
-  <nav>
-            <ul>
-                <li><a href="/login.html">Accueil</a></li>
-                <li><a href="/leaderboard">Classement</a></li>
-
-            </ul>
-        </nav>
+  <!-- Barre de navigation modifiée -->
+<nav>
+    <ul>
+        <li><a href="{{ url_for('main.home') }}">Accueil</a></li>
+        <li><a href="{{ url_for('main.leaderboard') }}">Leaderboard</a></li>
+    </ul>
+</nav>
 </header>
 <div class="wave-bg">
   <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
