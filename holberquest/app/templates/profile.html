@@ -45,12 +45,12 @@
     <section id="profile-menu">
             <div id="profile-info-menu">
                 <div id="profile-avatar">
-                    <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Holberton" alt="Avatar joueur" />
+                    <img src="{{ url_for('static', filename=avatar) }}" alt="Avatar joueur" />
                 </div>
                 <div id="profile-stats">
                     <div id="profile-pseudo">
                         <span class="profile-badge">👑</span>
-                        <span class="profile-pseudo-text">Stephane</span>
+                        <span class="profile-pseudo-text">{{ pseudo }}</span>
                     </div>
                     <div id="profile-level-container">
                         <span class="profile-level-shield">Lv <span id="profile-level">12</span></span>
@@ -62,8 +62,8 @@
                 </div>
             </div>
             <div id="profile-actions">
-                <button id="choose-avatar">Choisir un avatar</button>
-                <button id="start-quest" onclick="window.location.href='{{ url_for('main.combat') }}'">Commencer une quête</button>
+                <button id="choose-avatar">Changer d'avatar</button>
+                <button id="start-quest" onclick="window.location.href='{{ url_for('main.combat') }}'">Commencer le combat</button>
             </div>
         </section>
     <div id="profile-extra-stats">

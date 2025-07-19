@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for, session
 
 main_bp = Blueprint('main', __name__)
 
@@ -8,7 +8,10 @@ def home():
 
 @main_bp.route('/profile')
 def profile():
-    return render_template('profile.html')
+    pseudo = session.get('pseudo', 'Stephane')
+    avatar = session.get('avatar', 'hypo.png')
+    # Passe ces variables au template
+    return render_template('profile.html', pseudo=pseudo, avatar=avatar)
 
 @main_bp.route('/leaderboard')
 def leaderboard():
@@ -46,5 +49,11 @@ def combat():
 
 @main_bp.route('/create_avatar', methods=['GET', 'POST'])
 def create_avatar():
+    if request.method == 'POST':
+        pseudo = request.form.get('pseudo')
+        avatar = request.form.get('selectedAvatar')
+        session['pseudo'] = pseudo
+        session['avatar'] = avatar
+        return redirect(url_for('main.profile'))
     return render_template('create_avatar.html')
 
