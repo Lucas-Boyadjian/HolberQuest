@@ -5,7 +5,7 @@ import random
 import requests
 from app.models.quest import Quest
 from app import db
-from app.utils.helpers import gain_xp
+
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_API_URL = "https://slack.com/api/chat.postMessage"
