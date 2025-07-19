@@ -1,5 +1,5 @@
 import re
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from app import db
 from app.models.user import User
 import jwt
@@ -10,6 +10,10 @@ SECRET_KEY = "un_secret_pour_la_session"
 auth_bp = Blueprint('auth', __name__)
 
 EMAIL_REGEX = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+
+@auth_bp.route('/login', methods=['GET'])
+def login_form():
+    return render_template('login.html')
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
@@ -53,16 +57,38 @@ def register():
 
     return jsonify({'message': 'User created', 'id': user.id, 'token': token}), 201
 
+
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.json
-    if not data or 'email' not in data or 'password' not in data:
-        return jsonify({'error': 'Email et mot de passe requis'}), 400
-    user = User.query.filter_by(email=data['email']).first()
-    if user and check_password_hash(user.password_hash, data['password']):
+    # Détecte si la requête est JSON
+    if request.is_json:
+        data = request.get_json()
+        is_api = True
+    else:
+        data = request.form
+        is_api = False
+
+    email = data.get('email')
+    password = data.get('password')
+    if not email or not password:
+        if is_api:
+            return jsonify({'error': 'Email et mot de passe requis'}), 400
+        else:
+            return render_template('login.html', error="Email et mot de passe requis"), 400
+
+    user = User.query.filter_by(email=email).first()
+    if user and check_password_hash(user.password_hash, password):
         token = jwt.encode({
             'user_id': user.id,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }, SECRET_KEY, algorithm='HS256')
-        return jsonify({'message': 'Login successful', 'id': user.id, 'token': token}), 200
-    return jsonify({'error': 'Identifiants invalides'}), 401
+        if is_api:
+            return jsonify({'message': 'Login successful', 'id': user.id, 'token': token}), 200
+        else:
+            # Redirige vers le profil ou une autre page
+            return render_template('profile.html', pseudo=user.pseudo, avatar=user.avatar)
+    else:
+        if is_api:
+            return jsonify({'error': 'Identifiants invalides'}), 401
+        else:
+            return render_template('login.html', error="Identifiants invalides"), 401
