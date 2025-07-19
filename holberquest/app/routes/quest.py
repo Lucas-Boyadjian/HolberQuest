@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 from app.models.quest import Quest
 from app import db
 
@@ -72,3 +72,10 @@ def daily_quest():
         'xp_gagne': quest.xp_gagne,
         'xp_perdu': quest.xp_perdu
     }), 200
+
+@quest_bp.route('/quest/view/<int:quest_id>')
+def view_quest(quest_id):
+    quest = Quest.query.get(quest_id)
+    if not quest:
+        return "Quest not found", 404
+    return render_template('combat.html', quest=quest)

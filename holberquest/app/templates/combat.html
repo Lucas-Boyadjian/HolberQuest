@@ -333,11 +333,12 @@
                 <div class="combat-timer" id="timer">20s</div>
                 <h2 class="combat-question-title">Question de combat !</h2>
                 <div class="combat-question-content">
-                    <p><b>Que fait ce code Python ?</b></p>
-                    <pre>for i in range(3):<br>    print(i)</pre>
-                    <label><input type="radio" name="q1" value="a"> Affiche 0, 1, 2</label><br>
-                    <label><input type="radio" name="q1" value="b"> Affiche 1, 2, 3</label><br>
-                    <label><input type="radio" name="q1" value="c"> Affiche 3 fois 3</label>
+                    <p><b>{{ quest.question }}</b></p>
+                    {% for rep in quest.reponses %}
+                        <label>
+                            <input type="radio" name="q1" value="{{ rep }}"> {{ rep }}
+                        </label><br>
+                    {% endfor %}
                 </div>
                 <div class="combat-actions">
                     <button type="button" id="next-btn">Attaquer</button>
@@ -349,6 +350,10 @@
     <footer>
         <p>© 2025 HolberQuest — <a href="#">Contact</a> | <a href="#">Support</a></p>
     </footer>
+    <script>
+        // Ajoute la bonne réponse pour la question courante
+        const bonneReponse = "{{ quest.bonne_reponse }}";
+    </script>
     <script>
 
         let current = 0;
