@@ -4,6 +4,7 @@ from app import db
 from app.models.user import User
 import jwt
 import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 SECRET_KEY = "un_secret_pour_la_session"
 auth_bp = Blueprint('auth', __name__)
@@ -13,6 +14,10 @@ EMAIL_REGEX = r"^[\w\.-]+@[\w\.-]+\.\w+$"
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.json
+    # Vérifie la présence du mot de passe
+    if 'password' not in data or not data['password']:
+        return jsonify({'error': 'Mot de passe requis'}), 400
+    # ...tes vérifications email/pseudo...
     # Vérifie la présence de l'email
     if 'email' not in data or not data['email']:
         return jsonify({'error': 'Email requis'}), 400
@@ -33,7 +38,8 @@ def register():
         email=data['email'],
         avatar=data.get('avatar'),
         cohorte=data.get('cohorte'),
-        campus=data.get('campus')
+        campus=data.get('campus'),
+        password_hash=generate_password_hash(data['password'])
     )
     db.session.add(user)
     db.session.commit()
@@ -50,13 +56,13 @@ def register():
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.json
-    if not data or 'pseudo' not in data:
-        return jsonify({'error': 'Pseudo requis'}), 400
+    if not data or 'pseudo' not in data or 'password' not in data:
+        return jsonify({'error': 'Pseudo et mot de passe requis'}), 400
     user = User.query.filter_by(pseudo=data['pseudo']).first()
-    if user:
+    if user and check_password_hash(user.password_hash, data['password']):
         token = jwt.encode({
             'user_id': user.id,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
         }, SECRET_KEY, algorithm='HS256')
         return jsonify({'message': 'Login successful', 'id': user.id, 'token': token}), 200
-    return jsonify({'error': 'Utilisateur non trouvé'}), 404
+    return jsonify({'error': 'Identifiants invalides'}), 401
