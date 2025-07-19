@@ -6,6 +6,7 @@ from app.routes.combat import combat_bp
 from app.routes.auth import auth_bp
 from app.routes.quest import quest_bp
 from app.scheduler import scheduler  # Ajoute cette ligne pour démarrer le scheduler
+from app.scheduler import send_daily_question  # Import the missing function
 
 app.secret_key = "un_secret_pour_la_session"
 
@@ -16,4 +17,5 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(quest_bp)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    with app.app_context():
+        send_daily_question()
