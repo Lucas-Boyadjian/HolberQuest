@@ -196,6 +196,63 @@
             0% { opacity: 0.7; }
             100% { opacity: 1; box-shadow: 0 0 16px #fbbf24; }
         }
+        #login-form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 38px;
+            margin-bottom: 24px;
+        }
+
+        #login-form {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px #2563eb22;
+            padding: 32px 38px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 320px;
+            max-width: 380px;
+        }
+
+        #login-form h2 {
+            color: #2563eb;
+            font-size: 2em;
+            margin-bottom: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        #login-form input {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            border: 1px solid #a5d8ff;
+            font-size: 1.1em;
+            background: #f8fafc;
+            color: #222;
+            box-shadow: 0 1px 6px #2563eb11;
+        }
+
+        #login-form button {
+            background: linear-gradient(90deg, #2563eb 0%, #fbbf24 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 32px;
+            font-size: 1.15em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px #2563eb22;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        #login-form button:hover {
+            background: linear-gradient(90deg, #fbbf24 0%, #2563eb 100%);
+            transform: scale(1.08);
+        }
     </style>
 </head>
 <body>
@@ -220,6 +277,15 @@
             </ul>
         </nav>
     </header>
+
+    <div id="login-form-container">
+        <form id="login-form" method="post" action="/login" autocomplete="off">
+            <h2>Connexion</h2>
+            <input type="email" name="email" placeholder="Adresse mail" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
 
     <div class="main-bubbles-bg"></div>
     <div class="code-rain-bg"></div>
