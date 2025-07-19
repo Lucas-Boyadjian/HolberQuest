@@ -1,7 +1,7 @@
 from app import app, db
 from app.models.quest import Quest
 
-questions = questions = [
+questions = [
     {
         "question": "Quel est le résultat de print(3 * 2) en Python ?",
         "reponses": ["6", "32", "5"],
@@ -196,4 +196,4 @@ with app.app_context():
         )
         db.session.add(quest)
     db.session.commit()
-    print("Questions ajoutées !")
+    print("Questions insérées !")
