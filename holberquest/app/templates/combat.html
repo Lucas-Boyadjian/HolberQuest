@@ -351,89 +351,54 @@
         <p>© 2025 HolberQuest — <a href="#">Contact</a> | <a href="#">Support</a></p>
     </footer>
     <script>
-        // Ajoute la bonne réponse pour la question courante
-        const bonneReponse = "{{ quest.bonne_reponse }}";
-    </script>
-    <script>
-
-        let current = 0;
-        let score = 0;
+        // Timer simple
         let timer = 20;
-        let timerInterval = null;
-
-        function showQuestion(idx) {
-            const q = questions[idx];
-            let html = `
-                <div class="combat-timer" id="timer">20s</div>
-                <h2 class="combat-question-title">Question ${idx + 1} / ${questions.length}</h2>
-                <div class="combat-question-content">
-                    <p><b>${q.text}</b></p>
-                    <pre>${q.code}</pre>
-                    ${q.options.map(opt => `<label><input type="radio" name="q" value="${opt.value}"> ${opt.label}</label><br>`).join('')}
-                </div>
-                <div class="combat-actions">
-                    <button type="button" id="next-btn">Attaquer</button>
-                </div>
-                <div class="combat-feedback" id="combat-feedback"></div>
-            `;
-            document.querySelector('.combat-question-block').innerHTML = html;
-            startTimer();
-            document.getElementById('next-btn').addEventListener('click', nextStep);
-        }
-
-        function startTimer() {
-            timer = 20;
+        let timerInterval = setInterval(() => {
+            timer--;
             document.getElementById('timer').textContent = timer + "s";
-            timerInterval = setInterval(() => {
-                timer--;
-                document.getElementById('timer').textContent = timer + "s";
-                if (timer <= 0) {
-                    clearInterval(timerInterval);
-                    nextStep();
-                }
-            }, 1000);
-        }
+            if (timer <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('combat-feedback').textContent = "Temps écoulé !";
+                document.getElementById('combat-feedback').style.color = "orange";
+                document.getElementById('next-btn').disabled = true;
+            }
+        }, 1000);
 
-        function nextStep() {
-            clearInterval(timerInterval);
+        // Bonne réponse depuis Flask
+        const bonneReponse = "{{ quest.bonne_reponse }}";
+
+        // Gestion du bouton "Attaquer"
+        document.getElementById('next-btn').addEventListener('click', function() {
+            let radios = document.getElementsByName('q1');
+            let selected = null;
+            for (let r of radios) {
+                if (r.checked) selected = r.value;
+            }
             let feedback = document.getElementById('combat-feedback');
-            let radios = document.getElementsByName('q');
-            let answer = "";
-            for (let r of radios) { if (r.checked) answer = r.value; }
-            if (answer === questions[current].answer) {
+            if (selected === null) {
+                feedback.textContent = "Sélectionne une réponse !";
+                feedback.style.color = "#b71c1c";
+                return;
+            }
+            if (selected === bonneReponse) {
                 feedback.textContent = "Bonne réponse ! Tu infliges des dégâts au boss ⚡";
-                score++;
+                feedback.style.color = "green";
             } else {
                 feedback.textContent = "Raté ! Le boss esquive ton attaque...";
+                feedback.style.color = "red";
             }
-            setTimeout(() => {
-                feedback.textContent = "";
-                current++;
-                if (current < questions.length) {
-                    showQuestion(current);
-                } else {
-                    showEnd();
-                }
-            }, 1200);
-        }
+            clearInterval(timerInterval);
+            document.getElementById('next-btn').disabled = true;
 
-        function showEnd() {
-            document.querySelector('.combat-question-block').innerHTML = `
-                <h2 class="combat-question-title">Combat terminé !</h2>
-                <div class="combat-question-content">
-                    <p>Tu as répondu juste à <b>${score} / ${questions.length}</b> questions.</p>
-                    <a href="/login" id="home-link" style="background:linear-gradient(90deg,#2563eb 0%,#fbbf24 100%);color:#fff;border:none;border-radius:14px;padding:14px 32px;font-size:1.1em;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px #2563eb22; text-decoration:none; transition:background 0.2s; display:inline-block; margin-top:18px;">Retour à l'accueil</a>
-                </div>
-            `;
-        }
+            setTimeout(function() {
+                window.location.href = "{{ url_for('main.profile') }}";
+    }, 2000);
+});
 
-        // Démarre le combat après l'intro
+        // Intro
         function startArena() {
             document.getElementById('arena-intro').style.display = 'none';
             document.getElementById('arena-main').style.filter = 'none';
-            current = 0;
-            score = 0;
-            showQuestion(current);
         }
     </script>
 </body>
