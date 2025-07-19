@@ -50,7 +50,7 @@ def combat():
     quest = Quest.query.order_by(db.func.random()).first()
     if not quest:
         return "Aucune question disponible", 404
-    return redirect(url_for('quest.view_quest', quest_id=quest.id))
+    return render_template('combat.html', quest=quest)
 
 @main_bp.route('/create_avatar', methods=['GET', 'POST'])
 def create_avatar():
@@ -61,4 +61,3 @@ def create_avatar():
         session['avatar'] = avatar
         return redirect(url_for('main.profile'))
     return render_template('create_avatar.html')
-
