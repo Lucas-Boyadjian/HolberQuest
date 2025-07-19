@@ -18,6 +18,7 @@ def login_form():
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
+    print('DEBUG - Route /register appelée')
     if request.is_json:
         data = request.get_json()
         is_api = True
@@ -61,17 +62,18 @@ def register():
         else:
             return render_template('create_avatar.html', error="Pseudo déjà utilisé"), 409
 
+    print('DEBUG - Données reçues:', dict(data))
+    avatar = data.get('selectedAvatar')
+    print('DEBUG - Avatar reçu:', avatar)
     user = User(
         pseudo=data['pseudo'],
         email=data['email'],
-        avatar=data.get('avatar'),
+        avatar=avatar,
         cohorte=data.get('cohorte'),
         campus=data.get('campus'),
         password_hash=generate_password_hash(data['password'])
     )
     db.session.add(user)
-    db.session.commit()
-    user.avatar = f"https://api.dicebear.com/7.x/bottts/svg?seed={user.id}"
     db.session.commit()
 
     token = jwt.encode({
