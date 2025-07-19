@@ -5,7 +5,6 @@ import random
 import requests
 from app.models.quest import Quest  # Remplace QCM par Quest
 from app import db
-from app.utils.helpers import gain_xp
 from app.utils.timer import combat_data, start_timer
 from app.models.user import User
 
