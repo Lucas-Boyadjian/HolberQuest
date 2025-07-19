@@ -17,11 +17,11 @@ def create_combat():
     try:
         combat = Combat(
             user_id=data['user_id'],
-            adversaire_id=data.get('adversaire_id'),
             quest_id=data['quest_id'],
             resultat=data['resultat'],
-            date=data.get('date')
-        )
+            date=data.get('date'),
+            etat="en_cours"
+        )   
         db.session.add(combat)
         user = User.query.get(data['user_id'])
         if user and data['resultat'] == 'win':
@@ -37,7 +37,6 @@ def combat_history(user_id):
     combats = Combat.query.filter_by(user_id=user_id).all()
     history = [{
         'id': c.id,
-        'adversaire_id': c.adversaire_id,
         'quest_id': c.quest_id,
         'resultat': c.resultat,
         'date': c.date

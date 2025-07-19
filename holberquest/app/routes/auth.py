@@ -7,6 +7,9 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.json
+    existing_user = User.query.filter_by(pseudo=data['pseudo']).first()
+    if existing_user:
+        return jsonify({'error': 'Pseudo already exists'}), 409
     user = User(
         pseudo=data['pseudo'],
         avatar=data.get('avatar'),
@@ -22,7 +25,9 @@ def register():
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.json
+    if not data or 'pseudo' not in data:
+        return jsonify({'error': 'Pseudo requis'}), 400
     user = User.query.filter_by(pseudo=data['pseudo']).first()
     if user:
         return jsonify({'message': 'Login successful', 'id': user.id}), 200
-    return jsonify({'message': 'User not found'}), 404
+    return jsonify({'error': 'Utilisateur non trouvé'}), 404

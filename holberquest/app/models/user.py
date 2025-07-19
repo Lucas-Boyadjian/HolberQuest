@@ -2,6 +2,8 @@
 
 from app import db
 
+from app import db
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     pseudo = db.Column(db.String(80), unique=True, nullable=False)
@@ -11,3 +13,4 @@ class User(db.Model):
     cohorte = db.Column(db.String(80))
     campus = db.Column(db.String(80))
     slack_id = db.Column(db.String(50), unique=True)
+    combats = db.relationship('Combat', backref='joueur', lazy=True)
