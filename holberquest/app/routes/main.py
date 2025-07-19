@@ -40,3 +40,7 @@ def leaderboard():
 def login():
     return render_template('login.html')
 
+@main_bp.route('/combat')
+def combat():
+    return render_template('combat.html')
+
