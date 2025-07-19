@@ -1,31 +1,68 @@
-<!-- Login page -->
-<html lang="en">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HolberQuest</title>
-    <link rel="stylesheet" href="profile.css">
+    <title>HolberQuest - Accueil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 </head>
 <body>
-  <div class="code-rain-bg">
-    <div class="code-rain c1">if (xp > 1000) {<br>levelUp();<br>}</div>
-    <div class="code-rain c2">for (let q of quests) {<br>q.win();<br>}</div>
-    <div class="code-rain c3">function combat() {<br>return xp += 50;<br>}</div>
-    <div class="code-rain c4">while (life > 0) {<br>quest();<br>}</div>
-    <div class="code-rain c5">const player = "Stephane";</div>
-    <div class="code-rain c6">if (success) {<br>xp++<br>}</div>
-    <div class="code-rain c7">let badge = "👑";</div>
-  </div>
-  <div class="main-bubbles-bg">
-    <div class="bubble b1"></div>
-    <div class="bubble b2"></div>
-    <div class="bubble b3"></div>
-    <div class="bubble b4"></div>
-    <div class="bubble b5"></div>
-    <div class="bubble b6"></div>
-    <div class="bubble b7"></div>
-    <div class="bubble b8"></div>
-  </div>
-  <!-- ...le reste de ta page login... -->
+    <header>
+        <div class="header-deco">
+            <img src="{{ url_for('static', filename='Hypo.png') }}" alt="Mascotte HolberQuest" class="header-seahorse-svg">
+            <h1>HolberQuest</h1>
+        </div>
+        <!-- Barre de navigation modifiée -->
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('main.profile') }}">Profil</a></li>
+                <li><a href="{{ url_for('main.leaderboard') }}">Leaderboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-bubbles-bg">
+        <!-- bulles animées comme sur profil -->
+        <!-- ... -->
+    </div>
+    <div class="code-rain-bg">
+        <!-- code rain comme sur profil -->
+        <!-- ... -->
+    </div>
+
+    <main>
+        <section id="home-intro" style="text-align:center; margin-top:60px;">
+            <h2>Bienvenue sur HolberQuest !</h2>
+            <p>
+                Un jeu de quêtes et de progression pour les passionnés de code.<br>
+                Crée ton avatar, relève des défis, grimpe dans le classement et deviens une légende !
+            </p>
+            <div style="margin:32px 0;">
+                <a href="{{ url_for('main.profile') }}" class="profile-level-shield">Créer/voir mon avatar</a>
+                <a href="{{ url_for('main.leaderboard') }}" class="profile-level-shield" style="background:linear-gradient(90deg,#2563eb 0%,#a5d8ff 100%);margin-left:18px;">Voir le leaderboard</a>
+                <a href="{{ url_for('main.login') }}" class="profile-level-shield" style="background:linear-gradient(90deg,#516197 0%,#f8fafc 100%);margin-left:18px;">Connexion</a>
+            </div>
+        </section>
+
+        <section id="home-stats" style="margin:48px auto; max-width:700px;">
+            <h3 style="color:#2563eb;">Statistiques globales</h3>
+            <ul style="list-style:none; padding:0;">
+                <li class="profile-extra-stats">Joueurs inscrits : <span class="stats-badge">🧑‍💻</span> <b>124</b></li>
+                <li class="profile-extra-stats">Quêtes accomplies : <span class="stats-badge">🏆</span> <b>312</b></li>
+                <li class="profile-extra-stats">XP cumulée : <span class="stats-badge">⚡</span> <b>18 500</b></li>
+            </ul>
+        </section>
+
+        <section id="home-events" style="margin:48px auto; max-width:700px;">
+            <h3 style="color:#b71c1c;">Quête du jour</h3>
+            <div class="profile-level-shield" style="background:linear-gradient(90deg,#fbbf24 0%,#b71c1c 100%);margin-bottom:18px;">
+                "Résous le challenge Python en moins de 30 minutes !"
+            </div>
+            <a href="#" class="profile-actions button">Participer</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 HolberQuest — <a href="#">Contact</a> | <a href="#">Support</a></p>
+    </footer>
 </body>
 </html>
