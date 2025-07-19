@@ -12,7 +12,4 @@ class User(db.Model):
     niveau = db.Column(db.Integer, default=1)
     cohorte = db.Column(db.String(80))
     campus = db.Column(db.String(80))
-
-    combats = db.relationship('Combat', foreign_keys='Combat.user_id', backref='joueur', lazy=True)
-    combats_adversaire = db.relationship('Combat', foreign_keys='Combat.adversaire_id', backref='adversaire_obj', lazy=True)
-    # Si tu veux lier les quêtes auxquelles le user a participé, il faut une table d'association ou un modèle "UserQuest"
+    slack_id = db.Column(db.String(50), unique=True)

@@ -1,9 +1,17 @@
 body {
+    transform: scale(0.98);
+    transform-origin: top left;
+    width: 102.04vw; /* 100 / 0.98 */
+    height: 102.04vh;
+    overflow-x: auto;
     font-family: 'Segoe UI', Arial, sans-serif;
     background: linear-gradient(120deg, #e0e7ff 0%, #a5d8ff 60%, #2563eb 100%);
     min-height: 100vh;
     position: relative;
-    overflow-x: hidden;
+}
+
+html, body {
+    overflow-x: auto;
 }
 
 nav ul {
@@ -36,9 +44,9 @@ main {
 
 #profile-main-container {
     display: flex;
-    align-items: flex-start;
     justify-content: center;
-    gap: 500px;
+    align-items: flex-start;
+    gap: 40px; /* espace entre les deux blocs, ajuste la valeur si besoin */
     margin: 40px 0;
 }
 
@@ -455,4 +463,42 @@ main, #profile-main-container {
     width: 100vw;
     height: 100px;
     display: block;
+}
+
+#leaderboard-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 40px 0;
+}
+
+#leaderboard-section {
+    width: 128.21vw; /* 100 / 0.78 */
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #f8fafc;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px #2563eb22;
+    padding: 48px 32px;
+    transform: scale(0.78);
+    transform-origin: top center;
+}
+
+#leaderboard-table {
+    width: 100%;
+    font-size: 1.25em;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px #2563eb22;
+    margin: 0 auto;
+}
+
+#leaderboard-table-container {
+    max-height: 600px; /* ou la hauteur que tu veux */
+    overflow-y: auto;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px #2563eb22;
+    background: #f8fafc;
 }

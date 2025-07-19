@@ -10,10 +10,13 @@ from app.utils.helpers import start_combat_for_user  # À créer
 slack_bot = Blueprint('slack_bot', __name__)
 
 SLACK_SIGNING_SECRET = os.environ.get("SLACK_SIGNING_SECRET")
-SLACK_SIGNING_SECRET = app.config["SLACK_SIGNING_SECRET"]
+
 
 
 def verify_slack_request(req):
+    from flask import current_app
+    slack_signing_secret = current_app.config["SLACK_SIGNING_SECRET"]
+    
     timestamp = req.headers.get('X-Slack-Request-Timestamp')
     slack_signature = req.headers.get('X-Slack-Signature')
     
@@ -22,8 +25,8 @@ def verify_slack_request(req):
 
     sig_basestring = f"v0:{timestamp}:{req.get_data(as_text=True)}"
     my_signature = 'v0=' + hmac.new(
-        SLACK_SIGNING_SECRET.encode(),
-        sig_basestring.encode(),
+       
+        sig_basestring.encode(), slack_signing_secret.encode(),
         hashlib.sha256
     ).hexdigest()
 
@@ -32,15 +35,15 @@ def verify_slack_request(req):
 
 @slack_bot.route('/slack/events', methods=['POST'])
 def slack_events():
-    # Vérification de sécurité Slack
-    if not verify_slack_request(request):
-        abort(403)
-
     data = request.json
 
     # 1. Verification initiale Slack (connexion du bot)
     if data.get('type') == 'url_verification':
         return jsonify({'challenge': data.get('challenge')})
+
+    # Vérification de sécurité Slack (pour les autres requêtes)
+    if not verify_slack_request(request):
+        abort(403)
 
     # 2. Traitement des événements
     event = data.get('event', {})
