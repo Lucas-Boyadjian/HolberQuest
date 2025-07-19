@@ -56,9 +56,9 @@ def register():
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.json
-    if not data or 'pseudo' not in data or 'password' not in data:
-        return jsonify({'error': 'Pseudo et mot de passe requis'}), 400
-    user = User.query.filter_by(pseudo=data['pseudo']).first()
+    if not data or 'email' not in data or 'password' not in data:
+        return jsonify({'error': 'Email et mot de passe requis'}), 400
+    user = User.query.filter_by(email=data['email']).first()
     if user and check_password_hash(user.password_hash, data['password']):
         token = jwt.encode({
             'user_id': user.id,
