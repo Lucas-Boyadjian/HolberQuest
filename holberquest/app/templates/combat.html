@@ -287,7 +287,7 @@
                 </div>
                 <div class="combat-feedback" id="combat-feedback"></div>
                 <div style="text-align:center; margin-top:18px;">
-                    <button id="home-btn" style="display:none; background:linear-gradient(90deg,#2563eb 0%,#fbbf24 100%);color:#fff;border:none;border-radius:14px;padding:14px 32px;font-size:1.1em;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px #2563eb22;">Retour à l'accueil</button>
+                    <a href="/login" id="home-link" style="display:none; background:linear-gradient(90deg,#2563eb 0%,#fbbf24 100%);color:#fff;border:none;border-radius:14px;padding:14px 32px;font-size:1.1em;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px #2563eb22; text-decoration:none; transition:background 0.2s;">Retour à l'accueil</a>
                 </div>
             </form>
         </section>
@@ -377,12 +377,8 @@
             }
             setTimeout(() => {
                 feedback.textContent = "Combat terminé !";
-                document.getElementById('home-btn').style.display = "inline-block";
+                document.getElementById('home-link').style.display = "inline-block";
             }, 1500);
-        });
-
-        document.getElementById('home-btn').addEventListener('click', function() {
-            window.location.href = "{{ url_for('main.login') }}";
         });
     </script>
 </body>
