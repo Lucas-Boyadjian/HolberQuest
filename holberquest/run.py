@@ -4,6 +4,7 @@ from app import app
 from app.routes.main import main_bp
 from app.routes.combat import combat_bp
 from app.routes.auth import auth_bp
+from app.scheduler import scheduler  # Ajoute cette ligne pour démarrer le scheduler
 
 
 app.register_blueprint(slack_bot)
