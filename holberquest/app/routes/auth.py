@@ -18,25 +18,48 @@ def login_form():
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    data = request.json
+    if request.is_json:
+        data = request.get_json()
+        is_api = True
+    else:
+        data = request.form
+        is_api = False
+
     # Vérifie la présence du mot de passe
     if 'password' not in data or not data['password']:
-        return jsonify({'error': 'Mot de passe requis'}), 400
-    # ...tes vérifications email/pseudo...
+        if is_api:
+            return jsonify({'error': 'Mot de passe requis'}), 400
+        else:
+            return render_template('create_avatar.html', error="Mot de passe requis"), 400
     # Vérifie la présence de l'email
     if 'email' not in data or not data['email']:
-        return jsonify({'error': 'Email requis'}), 400
+        if is_api:
+            return jsonify({'error': 'Email requis'}), 400
+        else:
+            return render_template('create_avatar.html', error="Email requis"), 400
     # Vérifie la regex
     if not re.match(EMAIL_REGEX, data['email']):
-        return jsonify({'error': 'Email invalide'}), 400
+        if is_api:
+            return jsonify({'error': 'Email invalide'}), 400
+        else:
+            return render_template('create_avatar.html', error="Email invalide"), 400
     # Vérifie l'unicité
     if User.query.filter_by(email=data['email']).first():
-        return jsonify({'error': 'Email already exists'}), 409
+        if is_api:
+            return jsonify({'error': 'Email already exists'}), 409
+        else:
+            return render_template('create_avatar.html', error="Email déjà utilisé"), 409
     # Vérifie la présence du pseudo
     if 'pseudo' not in data or not data['pseudo']:
-        return jsonify({'error': 'Pseudo requis'}), 400
+        if is_api:
+            return jsonify({'error': 'Pseudo requis'}), 400
+        else:
+            return render_template('create_avatar.html', error="Pseudo requis"), 400
     if User.query.filter_by(pseudo=data['pseudo']).first():
-        return jsonify({'error': 'Pseudo already exists'}), 409
+        if is_api:
+            return jsonify({'error': 'Pseudo already exists'}), 409
+        else:
+            return render_template('create_avatar.html', error="Pseudo déjà utilisé"), 409
 
     user = User(
         pseudo=data['pseudo'],
@@ -56,7 +79,10 @@ def register():
         'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
     }, SECRET_KEY, algorithm='HS256')
 
-    return jsonify({'message': 'User created', 'id': user.id, 'token': token}), 201
+    if is_api:
+        return jsonify({'message': 'User created', 'id': user.id, 'token': token}), 201
+    else:
+        return redirect('/login')
 
 
 @auth_bp.route('/login', methods=['POST'])
