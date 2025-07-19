@@ -7,3 +7,6 @@ class Combat(db.Model):
     quest_id = db.Column(db.Integer, db.ForeignKey('quest.id'))
     resultat = db.Column(db.String(50))  # win, lose, flee, help
     date = db.Column(db.DateTime)
+    user = db.relationship('User', foreign_keys=[user_id])
+    adversaire = db.relationship('User', foreign_keys=[adversaire_id])
+    quest = db.relationship('Quest')
