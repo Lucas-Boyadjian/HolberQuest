@@ -6,6 +6,7 @@ import requests
 from app.models.quest import Quest  # Remplace QCM par Quest
 from app import db
 from flask import current_app
+from app.utils.timer import start_timer
 
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
@@ -27,10 +28,18 @@ def send_message_to_user(user_id, text, blocks=None):
         payload["blocks"] = blocks
 
     response = requests.post(SLACK_API_URL, json=payload, headers=headers)
-    return response.json()
+    resp_json = response.json()
+    if not resp_json.get("ok"):
+        print(f"[Slack API Error] {resp_json}")
+    return resp_json
 
 
 def start_combat_for_user(user_id):
+    # Vérifie si un combat est déjà en cours pour cet utilisateur
+    if user_id in combat_data:
+        send_message_to_user(user_id, "⚠️ Tu as déjà un combat en cours ! Termine-le avant d'en commencer un nouveau.")
+        return
+
     # Sélectionne une Quest aléatoire depuis la base
     quest = Quest.query.order_by(db.func.random()).first()
     if not quest:
@@ -47,15 +56,11 @@ def start_combat_for_user(user_id):
         blocks[1]["elements"].append({
             "type": "button",
             "text": {"type": "plain_text", "text": choice},
-            "value": f"{quest.id}|{idx}",  # ex: 5|2 (id Quest 5, choix index 2)
+            "value": f"{quest.id}|{idx}",
             "action_id": "answer_qcm"
         })
 
     send_message_to_user(user_id, "Une quête commence !", blocks=blocks)
-    # start_timer should be defined or imported; here is a simple placeholder implementation
-    def start_timer(user_id, quest_id):
-        # Placeholder: implement timer logic as needed
-        pass
     start_timer(user_id, quest.id)
 
     # À ce stade, il faut que tu crées un handler pour les réponses (interactions Slack) avec l’action "answer_qcm"
@@ -81,8 +86,13 @@ def resolve_qcm_response(user_id, quest_id, user_choice):
     combat_data.pop(user_id, None)
 
     quest = Quest.query.get(quest_id)
-    user = User.query.filter_by(slack_id=user_id).first()
-    if not user or not quest:
+    user = get_or_create_user(user_id)
+    if not quest:
+        return
+
+    # Vérifie que l'index de réponse est valide
+    if not isinstance(user_choice, int) or user_choice < 0 or user_choice >= len(quest.reponses):
+        send_message_to_user(user_id, ":warning: Réponse invalide ou question expirée.")
         return
 
     # Trouve l'index de la bonne réponse
@@ -103,7 +113,7 @@ def resolve_qcm_response(user_id, quest_id, user_choice):
 def auto_fail_combat(user_id):
     from app.models.user import User
     combat_data.pop(user_id, None)
-    user = User.query.filter_by(slack_id=user_id).first()
+    user = get_or_create_user(user_id)
     # Optionnel: tu peux retrouver le dernier QCM pour l'user si besoin
     send_message_to_user(user_id, ":hourglass_flowing_sand: Temps écoulé ! Tu as perdu le combat.")
     if user:
@@ -111,3 +121,12 @@ def auto_fail_combat(user_id):
         lose_xp(user, 5)
         from app import db
         db.session.commit()
+
+def get_or_create_user(slack_id):
+    from app.models.user import User
+    user = User.query.filter_by(slack_id=slack_id).first()
+    if not user:
+        user = User(slack_id=slack_id, xp=0, niveau=1)
+        db.session.add(user)
+        db.session.commit()
+    return user
