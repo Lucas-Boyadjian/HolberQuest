@@ -2,6 +2,11 @@ from flask import Blueprint, request, jsonify
 from app import db
 from app.models.user import User
 
+
+class Avatar:
+    pass
+
+
 avatar_bp = Blueprint('avatar', __name__)
 
 @avatar_bp.route('/avatar/<int:user_id>', methods=['PUT'])

@@ -11,3 +11,6 @@ class Quest(db.Model):
     difficulte = db.Column(db.String(50))
     xp_gagne = db.Column(db.Integer, default=10)
     xp_perdu = db.Column(db.Integer, default=0)
+
+class QCM:
+    pass

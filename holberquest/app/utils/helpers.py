@@ -5,7 +5,8 @@ import random
 import requests
 from app.models.quest import QCM  # à créer si pas encore fait
 from app import db
-from app.utils.helpers import gain_xp
+from flask import current_app
+
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_API_URL = "https://slack.com/api/chat.postMessage"
@@ -66,3 +67,6 @@ def get_user_rank(user):
 def lose_xp(user, xp_perdu):
     user.xp = max(0, user.xp - xp_perdu)
     user.niveau = calculer_niveau(user.xp)
+
+def get_slack_secret():
+    return current_app.config["SLACK_SIGNING_SECRET"]
