@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from app.routes.main import main_bp
 from dotenv import load_dotenv
 import os
 
@@ -12,5 +11,3 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["SLACK_BOT_TOKEN"] = os.getenv("SLACK_BOT_TOKEN")
 app.config["SLACK_SIGNING_SECRET"] = os.getenv("SLACK_SIGNING_SECRET")
 db = SQLAlchemy(app)
-
-app.register_blueprint(main_bp)

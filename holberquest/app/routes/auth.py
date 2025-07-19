@@ -7,6 +7,9 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/register', methods=['POST'])
 def register():
     data = request.json
+    existing_user = User.query.filter_by(pseudo=data['pseudo']).first()
+    if existing_user:
+        return jsonify({'error': 'Pseudo déjà utilisé'}), 400
     user = User(
         pseudo=data['pseudo'],
         avatar=data.get('avatar'),
