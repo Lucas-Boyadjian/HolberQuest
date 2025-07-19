@@ -1,9 +1,17 @@
 body {
+    transform: scale(0.98);
+    transform-origin: top left;
+    width: 102.04vw; /* 100 / 0.98 */
+    height: 102.04vh;
+    overflow-x: auto;
     font-family: 'Segoe UI', Arial, sans-serif;
     background: linear-gradient(120deg, #e0e7ff 0%, #a5d8ff 60%, #2563eb 100%);
     min-height: 100vh;
     position: relative;
-    overflow-x: hidden;
+}
+
+html, body {
+    overflow-x: auto;
 }
 
 nav ul {
@@ -36,26 +44,26 @@ main {
 
 #profile-main-container {
     display: flex;
-    align-items: flex-start;
     justify-content: center;
-    gap: 40px;
+    align-items: flex-start;
+    gap: 40px; /* espace entre les deux blocs, ajuste la valeur si besoin */
     margin: 40px 0;
 }
 
 #profile-menu, #profile-extra-stats {
-    background: #fff;
+    background: #626d8b;
     border-radius: 22px;
     box-shadow: 0 8px 32px #b71c1c22;
-    padding: 36px 44px;
-    min-width: 340px;
-    max-width: 480px;
+    padding: 64px 72px;
+    min-width: 520px;
+    max-width: 780px;
     border: 2px solid #e5e7eb;
 }
 
 #profile-info-menu {
     display: flex;
     align-items: flex-start;
-    gap: 32px;
+    gap: 30px;
     margin-bottom: 24px;
 }
 
@@ -76,7 +84,7 @@ main {
 }
 
 #profile-stats {
-    background: #fff;
+    background: #b8bac0; /* exemple : bleu pâle */
     border-radius: 14px;
     box-shadow: 0 2px 8px #b71c1c22;
     padding: 20px 28px;
@@ -124,7 +132,7 @@ progress#life-bar {
 }
 
 #profile-extra-stats {
-    background: linear-gradient(120deg, #e0e7ff 0%, #f8fafc 100%);
+    background: linear-gradient(120deg, #516197 0%, #f8fafc 100%);
     border-radius: 22px;
     box-shadow: 0 8px 32px #2563eb22;
     padding: 36px 44px;
@@ -217,7 +225,7 @@ progress#life-bar {
 }
 
 #profile-actions button:hover {
-    background: linear-gradient(90deg, #a5d8ff 0%, #2563eb 100%);
+    background: linear-gradient(90deg, #d19f32 0%, #2563eb 100%);
     transform: scale(1.08);
 }
 
@@ -235,15 +243,15 @@ header h1 {
     font-size: 6em;
     font-weight: bold;
     letter-spacing: 2px;
-    color: #ece6e6;
-    text-shadow: 2px 2px 8px #fff, 0 2px 0 #222;
+    color: #beb0b0;
+    text-shadow: 2px 2px 8px #795a5a, 0 2px 0 #222;
     margin-bottom: 0;
 }
 
 header {
-    background: #e0003c;
-    border-bottom: 4px solid #fff;
-    padding: 5px 0 10px 0; /* Mets 5px ou même 0 pour coller le titre en haut */
+    background: linear-gradient(90deg, #a5d8ff 0%, #f50c0c 100%);
+    /* border-bottom: 4px solid #fff; */
+    padding: 5px 0 10px 0;
     text-align: center;
     box-shadow: 0 2px 8px #0001;
 }
@@ -455,4 +463,30 @@ main, #profile-main-container {
     width: 100vw;
     height: 100px;
     display: block;
+}
+
+#leaderboard-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 40px 0;
+}
+
+#leaderboard-section {
+    width: 90vw;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #f8fafc;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px #2563eb22;
+    padding: 48px 32px;
+}
+
+#leaderboard-table {
+    width: 100%;
+    font-size: 1.25em;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px #2563eb22;
+    margin: 0 auto;
 }

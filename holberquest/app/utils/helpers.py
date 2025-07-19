@@ -5,8 +5,13 @@ import random
 import requests
 from app.models.quest import Quest  # Remplace QCM par Quest
 from app import db
+<<<<<<< HEAD
 from app.utils.timer import combat_data, start_timer
 from app.models.user import User
+=======
+from flask import current_app
+
+>>>>>>> origin/Dev3
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_API_URL = "https://slack.com/api/chat.postMessage"
@@ -51,6 +56,10 @@ def start_combat_for_user(user_id):
     send_message_to_user(user_id, "Une quête commence !", blocks=blocks)
     start_timer(user_id, quest.id)
 
+<<<<<<< HEAD
+=======
+    # À ce stade, il faut que tu crées un handler pour les réponses (interactions Slack) avec l’action "answer_qcm"
+>>>>>>> origin/Dev3
 def calculer_niveau(xp):
     # Exemple simple : 100 XP par niveau
     return xp // 100 + 1
@@ -68,6 +77,7 @@ def lose_xp(user, xp_perdu):
     user.xp = max(0, user.xp - xp_perdu)
     user.niveau = calculer_niveau(user.xp)
 
+<<<<<<< HEAD
 def resolve_qcm_response(user_id, quest_id, user_choice):
     combat_data.pop(user_id, None)
 
@@ -101,3 +111,7 @@ def auto_fail_combat(user_id):
         lose_xp(user, 5)
         from app import db
         db.session.commit()
+=======
+def get_slack_secret():
+    return current_app.config["SLACK_SIGNING_SECRET"]
+>>>>>>> origin/Dev3

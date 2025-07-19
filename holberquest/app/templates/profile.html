@@ -1,14 +1,15 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/Dev1
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Profil - HolberQuest</title>
-    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    <style>
+        html, body {
+            height: 100vh;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
   <div class="code-rain-bg">
@@ -28,8 +29,8 @@
   </div>
   <nav>
             <ul>
-                <li><a href="/index.html">Accueil</a></li>
-                <li><a href="/leaderboard.html">Classement</a></li>
+                <li><a href="/login.html">Accueil</a></li>
+                <li><a href="/leaderboard">Classement</a></li>
 
             </ul>
         </nav>
@@ -91,7 +92,3 @@
     </footer>
 </body>
 </html>
-<<<<<<< HEAD
->>>>>>> origin/dev2
-=======
->>>>>>> origin/Dev1
