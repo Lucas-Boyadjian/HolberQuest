@@ -381,8 +381,13 @@
                 return;
             }
             if (selected === bonneReponse) {
-                feedback.textContent = "Bonne réponse ! Tu infliges des dégâts au boss ⚡";
+                feedback.textContent = "Victoire ! Tu as blessé Hypo, il fuit... Tu remportes 10 XP 🏆";
                 feedback.style.color = "green";
+                fetch("{{ url_for('main.gain_xp_route') }}", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ xp: 10 })
+                });
             } else {
                 feedback.textContent = "Raté ! Le boss esquive ton attaque...";
                 feedback.style.color = "red";

@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, jsonify
+from app.models.user import User
+from app import db
 
 main_bp = Blueprint('main', __name__)
 
@@ -61,3 +63,17 @@ def create_avatar():
         session['avatar'] = avatar
         return redirect(url_for('main.profile'))
     return render_template('create_avatar.html')
+
+@main_bp.route('/gain_xp', methods=['POST'])
+def gain_xp_route():
+    from app.utils.helpers import gain_xp
+    from app.models.user import User
+    xp = int(request.json.get('xp', 0))
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    if user:
+        gain_xp(user, xp)
+        db.session.commit()
+        return jsonify({'xp': user.xp, 'niveau': user.niveau})
+    else:
+        return jsonify({'error': 'Utilisateur non connecté'}), 401
