@@ -232,10 +232,10 @@
                 Crée ton avatar, relève des défis, grimpe dans le classement et deviens une légende du code !
             </p>
             <div class="home-actions">
-                <a href="{{ url_for('main.profile') }}">Créer/voir mon avatar</a>
+                <a href="{{ url_for('main.create_avatar') }}">Créer mon avatar</a>
                 <a href="{{ url_for('main.leaderboard') }}">Voir le leaderboard</a>
             </div>
-            <a href="{{ url_for('main.profile') }}" class="start-adventure-btn">Commencer l’aventure</a>
+
         </section>
 
         <section id="home-stats">
@@ -253,7 +253,6 @@
                 "Résous le challenge Python en moins de 30 minutes !"
             </div>
             <br>
-            <a href="#" class="profile-actions button">Participer</a>
         </section>
     </main>
 

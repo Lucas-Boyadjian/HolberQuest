@@ -44,3 +44,7 @@ def login():
 def combat():
     return render_template('combat.html')
 
+@main_bp.route('/create_avatar', methods=['GET', 'POST'])
+def create_avatar():
+    return render_template('create_avatar.html')
+
