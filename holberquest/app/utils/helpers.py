@@ -5,13 +5,8 @@ import random
 import requests
 from app.models.quest import Quest  # Remplace QCM par Quest
 from app import db
-<<<<<<< HEAD
-from app.utils.timer import combat_data, start_timer
-from app.models.user import User
-=======
 from flask import current_app
 
->>>>>>> origin/Dev3
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_API_URL = "https://slack.com/api/chat.postMessage"
