@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Combat - HolberQuest</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    <style>
+        body {
+            background: radial-gradient(ellipse at top, #0f172a 0%, #2563eb 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .arena-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: repeating-linear-gradient(135deg, #2563eb22 0 2px, transparent 2px 40px);
+            animation: arena-move 8s linear infinite;
+        }
+        @keyframes arena-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 200px 200px; }
+        }
+        .arena-spotlight {
+            position: absolute;
+            top: -32px; left: 50%;
+            transform: translateX(-50%);
+            width: 100%; height: 180px;
+            background: radial-gradient(ellipse at center, #fbbf2433 0%, transparent 80%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .combat-vs {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 80px;
+            margin-bottom: 24px;
+            margin-top: 38px;
+            position: relative;
+            z-index: 2;
+        }
+        .combat-avatar {
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            box-shadow: 0 0 32px #2563eb88, 0 0 0 8px #fbbf24;
+            border: 6px solid #fbbf24;
+            background: #fff;
+            object-fit: cover;
+            transition: transform 0.2s;
+        }
+        .combat-avatar.player { filter: drop-shadow(0 0 16px #38bdf8); }
+        .combat-avatar.boss { filter: drop-shadow(0 0 24px #b71c1c); }
+        .boss-anim.hit { animation: boss-hit 0.4s; }
+        @keyframes boss-hit {
+            0% { transform: scale(1.1) rotate(-8deg);}
+            50% { transform: scale(0.95) rotate(8deg);}
+            100% { transform: scale(1) rotate(0);}
+        }
+        .combat-vs-text {
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #b71c1c;
+            text-shadow: 0 2px 24px #fbbf24, 0 0 32px #fff;
+            margin: 0 32px;
+            animation: vs-pop 1.2s infinite alternate;
+        }
+        @keyframes vs-pop {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.18) rotate(-8deg); }
+        }
+        .combat-bars {
+            display: flex;
+            justify-content: space-between;
+            gap: 32px;
+            margin-bottom: 18px;
+            margin-top: 12px;
+        }
+        .combat-bar {
+            width: 45%;
+            background: #1e293b;
+            border-radius: 14px;
+            height: 24px;
+            box-shadow: 0 1px 12px #2563eb44;
+            overflow: hidden;
+            position: relative;
+        }
+        .combat-bar-inner {
+            height: 100%;
+            border-radius: 14px;
+            transition: width 0.5s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        .combat-bar-life { background: linear-gradient(90deg, #b71c1c 0%, #fbbf24 100%); }
+        .combat-bar-xp { background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%); }
+        .combat-bar-label {
+            position: absolute;
+            left: 18px; top: 2px;
+            font-size: 1.1em;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 1px 8px #2563eb88;
+        }
+        .combat-title {
+            text-align: center;
+            color: #fbbf24;
+            font-size: 2.8em;
+            margin-bottom: 32px;
+            text-shadow: 0 2px 24px #b71c1c, 0 0 32px #fff;
+            letter-spacing: 2px;
+        }
+        .combat-question {
+            margin-bottom: 38px;
+            background: #1e293b;
+            border-radius: 24px;
+            box-shadow: 0 2px 16px #2563eb44;
+            padding: 32px 38px;
+            position: relative;
+            animation: fade-in 0.8s;
+        }
+        .combat-question pre {
+            background: #fff;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 6px #2563eb22;
+        }
+        .combat-timer {
+            position: absolute;
+            top: 18px;
+            right: 24px;
+            background: linear-gradient(90deg,#fbbf24 0%,#b71c1c 100%);
+            color: #fff;
+            border-radius: 18px;
+            padding: 8px 18px;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 2px 8px #b71c1c33;
+            border: 2px solid #fff;
+            animation: timer-danger 1s infinite alternate;
+        }
+        @keyframes timer-danger {
+            0% { box-shadow: 0 0 8px #fbbf24; }
+            100% { box-shadow: 0 0 24px #b71c1c; }
+        }
+        .combat-actions {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .combat-actions button {
+            background: linear-gradient(90deg, #2563eb 0%, #fbbf24 100%);
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            padding: 22px 48px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 16px #b71c1c44;
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 18px;
+        }
+        .combat-actions button:active {
+            background: linear-gradient(90deg, #fbbf24 0%, #2563eb 100%);
+            transform: scale(1.08);
+        }
+        .combat-actions button::after {
+            content: "⚡";
+            position: absolute;
+            right: -32px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3em;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .combat-actions button:hover::after {
+            opacity: 1;
+        }
+        .combat-feedback {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #38bdf8;
+            margin-top: 18px;
+            animation: fade-in 0.6s;
+            min-height: 2em;
+        }
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(20px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
+        .arena-intro {
+            position: fixed;
+            inset: 0;
+            background: #0f172aee;
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fade-in 1.2s;
+        }
+        .arena-intro h2 {
+            color: #fbbf24;
+            font-size: 3em;
+            text-shadow: 0 2px 24px #b71c1c, 0 0 32px #fff;
+            margin-bottom: 18px;
+        }
+        .arena-intro p {
+            color: #fff;
+            font-size: 1.5em;
+            margin-bottom: 32px;
+        }
+        .arena-intro button {
+            background: linear-gradient(90deg, #2563eb 0%, #fbbf24 100%);
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            padding: 18px 38px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 16px #2563eb44;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .arena-intro button:active {
+            background: linear-gradient(90deg, #fbbf24 0%, #2563eb 100%);
+            transform: scale(1.08);
+        }
+        /* Shake effect for attack */
+        .shake {
+            animation: shake 0.4s;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0);}
+            20% { transform: translateX(-12px);}
+            40% { transform: translateX(12px);}
+            60% { transform: translateX(-8px);}
+            80% { transform: translateX(8px);}
+            100% { transform: translateX(0);}
+        }
+        .combat-vs-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        .combat-player, .combat-boss {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .combat-player-label, .combat-boss-label {
+            text-align: center;
+            font-size: 1.3em;
+            color: #2563eb;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        .combat-question-block {
+            background: #e0e7ff;
+            border-radius: 32px;
+            box-shadow: 0 8px 48px #2563eb88, 0 0 120px #fbbf2433 inset;
+            padding: 64px 64px;
+            text-align: center;
+            margin-top: 32px;
+            position: relative;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            transform: scale(1.15);
+            transition: transform 0.3s;
+        }
+        .combat-question-title {
+            font-size: 2.8em;
+            color: #2563eb;
+            margin-bottom: 28px;
+            text-shadow: 0 2px 18px #fbbf24;
+            letter-spacing: 1px;
+        }
+        .combat-question-content p {
+            font-size: 1.5em;
+            margin-bottom: 18px;
+        }
+        .combat-question-content pre {
+            font-size: 1.3em;
+            padding: 18px;
+        }
+        .combat-question-content label {
+            font-size: 1.25em;
+            margin: 12px 0;
+            display: block;
+        }
+        .combat-actions button {
+            font-size: 1.5em;
+            padding: 28px 64px;
+            border-radius: 24px;
+            margin-top: 28px;
+        }
+        .combat-timer {
+            font-size: 1.5em;
+            padding: 12px 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="arena-bg"></div>
+    <div class="arena-intro" id="arena-intro">
+        <h2>Boss Fight !</h2>
+        <p>Prépare-toi à affronter le redoutable <b>Hypo</b> dans un duel de QCM.<br>Réponds vite et juste pour infliger des dégâts !</p>
+        <button onclick="startArena()">Commencer le combat</button>
+    </div>
+    <main style="filter: blur(8px);" id="arena-main">
+        <section id="combat-arena">
+            <div class="arena-spotlight"></div>
+            <div class="combat-vs-row">
+                <div class="combat-player">
+                    <img src="{{ url_for('static', filename='hypo.png') }}" class="combat-avatar player" alt="Joueur">
+                    <div class="combat-player-label">Toi</div>
+                </div>
+                <div class="combat-vs-text">VS</div>
+                <div class="combat-boss">
+                    <img src="{{ url_for('static', filename='hypo.png') }}" class="combat-avatar boss" alt="Boss">
+                    <div class="combat-boss-label">Hypo</div>
+                </div>
+            </div>
+            <div class="combat-question-block">
+                <div class="combat-timer" id="timer">20s</div>
+                <h2 class="combat-question-title">Question de combat !</h2>
+                <div class="combat-question-content">
+                    <p><b>Que fait ce code Python ?</b></p>
+                    <pre>for i in range(3):<br>    print(i)</pre>
+                    <label><input type="radio" name="q1" value="a"> Affiche 0, 1, 2</label><br>
+                    <label><input type="radio" name="q1" value="b"> Affiche 1, 2, 3</label><br>
+                    <label><input type="radio" name="q1" value="c"> Affiche 3 fois 3</label>
+                </div>
+                <div class="combat-actions">
+                    <button type="button" id="next-btn">Attaquer</button>
+                </div>
+                <div class="combat-feedback" id="combat-feedback"></div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 HolberQuest — <a href="#">Contact</a> | <a href="#">Support</a></p>
+    </footer>
+    <script>
+
+        let current = 0;
+        let score = 0;
+        let timer = 20;
+        let timerInterval = null;
+
+        function showQuestion(idx) {
+            const q = questions[idx];
+            let html = `
+                <div class="combat-timer" id="timer">20s</div>
+                <h2 class="combat-question-title">Question ${idx + 1} / ${questions.length}</h2>
+                <div class="combat-question-content">
+                    <p><b>${q.text}</b></p>
+                    <pre>${q.code}</pre>
+                    ${q.options.map(opt => `<label><input type="radio" name="q" value="${opt.value}"> ${opt.label}</label><br>`).join('')}
+                </div>
+                <div class="combat-actions">
+                    <button type="button" id="next-btn">Attaquer</button>
+                </div>
+                <div class="combat-feedback" id="combat-feedback"></div>
+            `;
+            document.querySelector('.combat-question-block').innerHTML = html;
+            startTimer();
+            document.getElementById('next-btn').addEventListener('click', nextStep);
+        }
+
+        function startTimer() {
+            timer = 20;
+            document.getElementById('timer').textContent = timer + "s";
+            timerInterval = setInterval(() => {
+                timer--;
+                document.getElementById('timer').textContent = timer + "s";
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    nextStep();
+                }
+            }, 1000);
+        }
+
+        function nextStep() {
+            clearInterval(timerInterval);
+            let feedback = document.getElementById('combat-feedback');
+            let radios = document.getElementsByName('q');
+            let answer = "";
+            for (let r of radios) { if (r.checked) answer = r.value; }
+            if (answer === questions[current].answer) {
+                feedback.textContent = "Bonne réponse ! Tu infliges des dégâts au boss ⚡";
+                score++;
+            } else {
+                feedback.textContent = "Raté ! Le boss esquive ton attaque...";
+            }
+            setTimeout(() => {
+                feedback.textContent = "";
+                current++;
+                if (current < questions.length) {
+                    showQuestion(current);
+                } else {
+                    showEnd();
+                }
+            }, 1200);
+        }
+
+        function showEnd() {
+            document.querySelector('.combat-question-block').innerHTML = `
+                <h2 class="combat-question-title">Combat terminé !</h2>
+                <div class="combat-question-content">
+                    <p>Tu as répondu juste à <b>${score} / ${questions.length}</b> questions.</p>
+                    <a href="/login" id="home-link" style="background:linear-gradient(90deg,#2563eb 0%,#fbbf24 100%);color:#fff;border:none;border-radius:14px;padding:14px 32px;font-size:1.1em;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px #2563eb22; text-decoration:none; transition:background 0.2s; display:inline-block; margin-top:18px;">Retour à l'accueil</a>
+                </div>
+            `;
+        }
+
+        // Démarre le combat après l'intro
+        function startArena() {
+            document.getElementById('arena-intro').style.display = 'none';
+            document.getElementById('arena-main').style.filter = 'none';
+            current = 0;
+            score = 0;
+            showQuestion(current);
+        }
+    </script>
+</body>
+</html>

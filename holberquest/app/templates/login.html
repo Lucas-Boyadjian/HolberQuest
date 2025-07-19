@@ -4,14 +4,215 @@
     <meta charset="UTF-8">
     <title>HolberQuest - Accueil</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    <style>
+        html, body {
+            overflow-x: hidden !important;
+        }
+        body {
+            background: radial-gradient(ellipse at top, #a5d8ff 0%, #2563eb 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+        .header-deco {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 32px;
+        }
+        .mascotte-home {
+            width: 100px;
+            height: 100px;
+            filter: drop-shadow(0 0 32px #2563eb88);
+            animation: seahorse-float 2.5s infinite alternate;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .mascotte-home:hover {
+            transform: scale(1.15) rotate(-8deg);
+            filter: drop-shadow(0 0 48px #fbbf24);
+        }
+        @keyframes seahorse-float {
+            0% { transform: translateY(0) rotate(-8deg); }
+            100% { transform: translateY(-18px) rotate(8deg); }
+        }
+        h1 {
+            font-size: 5em;
+            font-weight: bold;
+            color: #fbbf24;
+            text-shadow: 0 0 32px #2563eb, 0 2px 0 #fff, 0 0 12px #fbbf24;
+            letter-spacing: 2px;
+            margin-bottom: 0;
+            animation: title-pop 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        @keyframes title-pop {
+            0% { transform: scale(0.7); opacity: 0.2; }
+            80% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        #home-intro h2 {
+            font-size: 2.2em;
+            color: #fff;
+            text-shadow: 0 2px 12px #2563eb;
+            margin-bottom: 18px;
+            animation: fade-in 1.2s 0.3s both;
+        }
+        #home-intro p {
+            font-size: 1.3em;
+            color: #f8fafc;
+            margin-bottom: 32px;
+            text-shadow: 0 2px 8px #2563eb88;
+            animation: fade-in 1.2s 0.6s both;
+        }
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(20px);}
+            100% { opacity: 1; transform: translateY(0);}
+        }
+        .home-actions {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 32px;
+            animation: fade-in 1.2s 0.9s both;
+        }
+        .home-actions a, .start-adventure-btn {
+            background: linear-gradient(90deg, #fbbf24 0%, #2563eb 100%);
+            color: #fff;
+            border-radius: 22px;
+            padding: 22px 48px;
+            font-size: 1.35em;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 24px #2563eb44, 0 0 12px #fbbf24;
+            border: 2px solid #fff;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .home-actions a:hover, .start-adventure-btn:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #fbbf24 100%);
+            transform: scale(1.12) rotate(-2deg);
+            box-shadow: 0 8px 32px #fbbf24;
+        }
+        .start-adventure-btn {
+            animation: pulse-btn 1.2s infinite alternate;
+            margin-top: 18px;
+        }
+        @keyframes pulse-btn {
+            0% { box-shadow: 0 0 12px #fbbf24, 0 4px 24px #2563eb44; }
+            100% { box-shadow: 0 0 32px #fbbf24, 0 8px 32px #2563eb88; }
+        }
+        #home-stats {
+            background: rgba(255,255,255,0.12);
+            border-radius: 18px;
+            box-shadow: 0 4px 24px #2563eb22;
+            padding: 32px 24px;
+            margin: 48px auto;
+            max-width: 700px;
+            animation: fade-in 1.2s 1.2s both;
+        }
+        #home-stats h3 {
+            color: #fbbf24;
+            font-size: 1.5em;
+            margin-bottom: 18px;
+            text-align: center;
+            text-shadow: 0 2px 8px #2563eb88;
+        }
+        #home-stats ul {
+            display: flex;
+            justify-content: space-around;
+            gap: 18px;
+            padding: 0;
+            list-style: none;
+        }
+        #home-stats li {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px #2563eb22;
+            padding: 18px 24px;
+            font-size: 1.18em;
+            color: #222;
+            font-weight: 500;
+            border-left: 6px solid #2563eb;
+            min-width: 120px;
+            text-align: center;
+        }
+        #home-events {
+            margin: 48px auto;
+            max-width: 700px;
+            text-align: center;
+            animation: fade-in 1.2s 1.5s both;
+        }
+        #home-events h3 {
+            color: #b71c1c;
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px #fbbf24;
+        }
+        .profile-level-shield {
+            margin-bottom: 18px;
+            display: inline-block;
+            font-size: 1.2em;
+            background: linear-gradient(90deg,#fbbf24 0%,#b71c1c 100%);
+            color: #fff;
+            border-radius: 50px;
+            padding: 12px 28px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px #b71c1c33;
+            border: 2px solid #fff;
+            letter-spacing: 1px;
+            animation: shield-glow 2s infinite alternate;
+        }
+        @keyframes shield-glow {
+            0% { box-shadow: 0 0 8px #fbbf24; }
+            100% { box-shadow: 0 0 24px #b71c1c; }
+        }
+        .main-bubbles-bg, .code-rain-bg {
+            z-index: 0;
+        }
+        .deco-stars {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .deco-stars span {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.7;
+            width: 4px; height: 4px;
+            box-shadow: 0 0 8px #fbbf24;
+            animation: star-blink 2s infinite alternate;
+        }
+        .deco-stars .s1 { top: 12vh; left: 8vw; }
+        .deco-stars .s2 { top: 22vh; left: 22vw; }
+        .deco-stars .s3 { top: 35vh; left: 35vw; }
+        .deco-stars .s4 { top: 50vh; left: 50vw; }
+        .deco-stars .s5 { top: 65vh; left: 65vw; }
+        .deco-stars .s6 { top: 78vh; left: 78vw; }
+        .deco-stars .s7 { top: 88vh; left: 88vw; }
+        @keyframes star-blink {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; box-shadow: 0 0 16px #fbbf24; }
+        }
+    </style>
 </head>
 <body>
+    <div class="deco-stars">
+        <span class="s1"></span>
+        <span class="s2"></span>
+        <span class="s3"></span>
+        <span class="s4"></span>
+        <span class="s5"></span>
+        <span class="s6"></span>
+        <span class="s7"></span>
+    </div>
     <header>
         <div class="header-deco">
-            <img src="{{ url_for('static', filename='Hypo.png') }}" alt="Mascotte HolberQuest" class="header-seahorse-svg">
+            <img src="{{ url_for('static', filename='Hypo.png') }}" alt="Mascotte HolberQuest" class="mascotte-home">
             <h1>HolberQuest</h1>
         </div>
-        <!-- Barre de navigation modifiée -->
         <nav>
             <ul>
                 <li><a href="{{ url_for('main.profile') }}">Profil</a></li>
@@ -20,44 +221,38 @@
         </nav>
     </header>
 
-    <div class="main-bubbles-bg">
-        <!-- bulles animées comme sur profil -->
-        <!-- ... -->
-    </div>
-    <div class="code-rain-bg">
-        <!-- code rain comme sur profil -->
-        <!-- ... -->
-    </div>
+    <div class="main-bubbles-bg"></div>
+    <div class="code-rain-bg"></div>
 
     <main>
         <section id="home-intro" style="text-align:center; margin-top:60px;">
-            <h2>Bienvenue sur HolberQuest !</h2>
+            <h2>Prêt pour l’aventure ?</h2>
             <p>
-                Un jeu de quêtes et de progression pour les passionnés de code.<br>
-                Crée ton avatar, relève des défis, grimpe dans le classement et deviens une légende !
+                <b>Rejoins HolberQuest, le jeu de quêtes et de progression pour les codeurs.</b><br>
+                Crée ton avatar, relève des défis, grimpe dans le classement et deviens une légende du code !
             </p>
-            <div style="margin:32px 0;">
-                <a href="{{ url_for('main.profile') }}" class="profile-level-shield">Créer/voir mon avatar</a>
-                <a href="{{ url_for('main.leaderboard') }}" class="profile-level-shield" style="background:linear-gradient(90deg,#2563eb 0%,#a5d8ff 100%);margin-left:18px;">Voir le leaderboard</a>
-                <a href="{{ url_for('main.login') }}" class="profile-level-shield" style="background:linear-gradient(90deg,#516197 0%,#f8fafc 100%);margin-left:18px;">Connexion</a>
+            <div class="home-actions">
+                <a href="{{ url_for('main.create_avatar') }}">Créer mon avatar</a>
+                <a href="{{ url_for('main.leaderboard') }}">Voir le leaderboard</a>
             </div>
+
         </section>
 
-        <section id="home-stats" style="margin:48px auto; max-width:700px;">
-            <h3 style="color:#2563eb;">Statistiques globales</h3>
-            <ul style="list-style:none; padding:0;">
-                <li class="profile-extra-stats">Joueurs inscrits : <span class="stats-badge">🧑‍💻</span> <b>124</b></li>
-                <li class="profile-extra-stats">Quêtes accomplies : <span class="stats-badge">🏆</span> <b>312</b></li>
-                <li class="profile-extra-stats">XP cumulée : <span class="stats-badge">⚡</span> <b>18 500</b></li>
+        <section id="home-stats">
+            <h3>Statistiques globales</h3>
+            <ul>
+                <li>🧑‍💻<br><b>124</b><br>Joueurs</li>
+                <li>🏆<br><b>312</b><br>Quêtes</li>
+                <li>⚡<br><b>18 500</b><br>XP</li>
             </ul>
         </section>
 
-        <section id="home-events" style="margin:48px auto; max-width:700px;">
-            <h3 style="color:#b71c1c;">Quête du jour</h3>
-            <div class="profile-level-shield" style="background:linear-gradient(90deg,#fbbf24 0%,#b71c1c 100%);margin-bottom:18px;">
+        <section id="home-events">
+            <h3>Quête du jour</h3>
+            <div class="profile-level-shield">
                 "Résous le challenge Python en moins de 30 minutes !"
             </div>
-            <a href="#" class="profile-actions button">Participer</a>
+            <br>
         </section>
     </main>
 
