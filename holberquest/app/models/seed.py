@@ -1,15 +1,15 @@
 from app import db
-from app.models.quest import QCM
+from app.models.quest import Quest
 import json
 
 def seed_qcm():
     qcms = [
-        QCM(
+        Quest(
             question="Quel est le langage principal de Flask ?",
             choices=json.dumps(["JavaScript", "Python", "PHP", "Ruby"]),
             correct_index=1
         ),
-        QCM(
+        Quest(
             question="Quelle commande initialise un projet Git ?",
             choices=json.dumps(["git start", "git init", "git push", "git clone"]),
             correct_index=1
